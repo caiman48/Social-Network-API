@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const reactionSchema = require("./Reaction"); // Import the Reaction schema
+const reactionSchema = require("./Reactions"); // Import the Reaction schema
 
 const thoughtSchema = new Schema(
   {
@@ -12,6 +12,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (createdAtVal) => createdAtVal.toDateString(), // Format the date
     },
 
     username: {
@@ -22,7 +23,6 @@ const thoughtSchema = new Schema(
   },
   {
     toJSON: { virtuals: true, getters: true },
-    
   }
 );
 
