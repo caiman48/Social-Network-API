@@ -1,17 +1,69 @@
 const User = require("../models/User");
 
 const userController = {
+  // get all users
+  async getAllUsers(req, res) {
+    try {
+      const users = await User.find({});
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get users", error });
+    }
+  },
+  // get user by id
+  async getUserById(req, res) {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        res.status(404).json({ message: "No user found with this id!" });
+        return;
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get user by id", error });
+    }
+  },
 
-    // get all users
-    async getAllUsers(req, res) {
-        try {
-            const users = await User.find({});
-            res.json(users);
-        } catch (error) {
-            res.status(500).json({ message: "Failed to get users", error });
-        }
-    },
-    // get user by id
-    async getUserById(req, res) {
-        try {
-            const user = await User.findById(req.params.id);
+  // create user
+  async createUser(req, res) {
+    try {
+      const newUser = await User.create(req.body);
+      res.status(200).json(newUser);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create user", error });
+    }
+  },
+  // update user
+  async updateUser(req, res) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      if (!updatedUser) {
+        res.status(404).json({ message: "No user found with this id!" });
+        return;
+      }
+      res.json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update user", error });
+    }
+  },
+  // delete user
+
+  async deleteUser(req, res) {
+    try {
+      const deletedUser = await User.findByIdAndDelete(req.params.id);
+      if (!deletedUser) {
+        res.status(404).json({ message: "No user found with this id!" });
+        return;
+      }
+      res.json(deletedUser);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete user", error });
+    }
+  },
+};
+
+module.exports = userController;
