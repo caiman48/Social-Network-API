@@ -1,4 +1,4 @@
-const thought = require("../models/Thoughts");
+const Thought = require("../models/Thoughts");
 const User = require("../models/User");
 
 const thoughtController = {
@@ -27,13 +27,28 @@ const thoughtController = {
   },
   // create thought
   async createThought(req, res) {
+    console.log("Received data for new thought:", req.body);
+    if (!req.body.userId) {
+      return res.status(400).json({ message: "userId is required" });
+      
+    }
     try {
-      const newThought = await Thought.create(req.body);
+      const userExists = await User.findById(req.body.userId);
+      if (!userExists) {
+        return res.status(404).json({ message: "No user found with this id!" });
+      }
+      const newThought = await Thought.create({
+        thoughtText: req.body.thoughtText,
+        username: userExists.username,
+        userId: req.body.userId
+      });
       await User.findByIdAndUpdate(req.body.userId, {
         $push: { thoughts: newThought._id },
       });
+      console.log("Thought created successfully:", newThought)
       res.status(200).json(newThought);
     } catch (error) {
+      
       res.status(500).json({ message: "Failed to create thought", error });
     }
   },
