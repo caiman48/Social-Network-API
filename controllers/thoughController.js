@@ -5,9 +5,10 @@ const thoughtController = {
   // get all thoughts
   async getAllThoughts(req, res) {
     try {
-      const thoughts = await thought.find({});
+      const thoughts = await Thought.find({}).populate("reactions");
       res.json(thoughts);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Failed to get thoughts", error });
     }
   },
