@@ -1,10 +1,15 @@
+const { populate } = require("../models/Thoughts");
 const User = require("../models/User");
 
 const userController = {
   // get all users
   async getAllUsers(req, res) {
     try {
-      const users = await User.find({});
+      const users = await User.find({})
+      .populate({
+        path: 'thoughts',
+        populate: { path: 'reactions' }
+      })
       res.json(users);
     } catch (error) {
       res.status(500).json({ message: "Failed to get users", error });
@@ -13,7 +18,11 @@ const userController = {
   // get user by id
   async getUserById(req, res) {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.params.id)
+        .populate({
+          path:'thoughts',
+          populate: { path: 'reactions' }
+        });
       if (!user) {
         res.status(404).json({ message: "No user found with this id!" });
         return;

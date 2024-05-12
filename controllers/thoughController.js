@@ -48,7 +48,7 @@ const thoughtController = {
       console.log("Thought created successfully:", newThought)
       res.status(200).json(newThought);
     } catch (error) {
-      
+
       res.status(500).json({ message: "Failed to create thought", error });
     }
   },
