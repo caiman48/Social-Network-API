@@ -104,10 +104,11 @@ const thoughtController = {
   // remove reaction
   async removeReaction(req, res) {
     try {
-      const updatedThought = await Thought.findByIdAndUpdate(
-        req.params.thoughtId,
+      console.log("attempting to remove reaction WITH id:,", req.params.reactionId);
+      const updatedThought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
         { $pull: { reactions: { reactionId: req.params.reactionId } } },
-        { new: true }
+        { new: true, runValidators: true}
       );
       if (!updatedThought) {
         return res
