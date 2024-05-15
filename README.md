@@ -4,6 +4,12 @@
 
 This is a social network API designed for a social media startup. The API uses a NoSQL database (MongoDB) to handle large amounts of unstructured data, providing efficient and scalable operations for a social network platform.
 
+
+## Video 
+
+https://www.loom.com/share/0a1ef7ec056e4b7c992e9b3249f0e602?sid=fc47d66f-cdcd-4072-83a7-5300d427a406
+
+
 ## User Story
 
 AS a social media startup  
